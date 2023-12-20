@@ -1,5 +1,4 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 
 def start_inline():
@@ -47,3 +46,19 @@ def profile_inline():
             InlineKeyboardButton(text='Назад', callback_data='back')
         ]
     ])
+    return kb
+
+
+def free_top_up_inline():
+    kb = InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(text='Промокоды', callback_data='promocodes')
+        ],
+        [
+            InlineKeyboardButton(text='Реферальная программа', callback_data='referal_program')
+        ],
+        [
+            InlineKeyboardButton(text='Назад', callback_data='back')
+        ]
+    ])
+    return kb
