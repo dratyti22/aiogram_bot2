@@ -16,3 +16,20 @@ def start_inline():
         ]
     ])
     return kb
+
+
+def catalog_inline():
+    kb = InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(text='Brawl Stars', callback_data='brawl_stars'),
+        ],
+        [
+            InlineKeyboardButton(text='Clash Royale', callback_data='Clash_Royale'),
+            InlineKeyboardButton(text='Clash of Clans', callback_data='Clash_of_Clans')
+        ],
+        [
+            InlineKeyboardButton(text='PUBG mobaile', callback_data='PUBG_mobaile'),
+            InlineKeyboardButton(text='CODM', callback_data='CODM')
+        ]
+    ])
+    return kb
