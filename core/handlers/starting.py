@@ -3,7 +3,7 @@ from aiogram.filters import Command
 from aiogram.types import Message, CallbackQuery
 
 from core.handlers.text import text_start
-from core.keyboards.inline import start_inline, catalog_inline
+from core.keyboards.inline import start_inline, catalog_inline, profile_inline
 from core.keyboards.commands import command_bot
 
 router = Router()
@@ -20,3 +20,13 @@ async def get_catalog(callback: CallbackQuery):
     await callback.bot.edit_message_text(chat_id=callback.message.chat.id, message_id=callback.message.message_id,
                                          reply_markup=catalog_inline(),
                                          text='Каталог игр')
+
+
+@router.callback_query(F.data == 'profile')
+async def get_profile(callback: CallbackQuery):
+    await callback.bot.edit_message_text(chat_id=callback.message.chat.id, message_id=callback.message.message_id,
+                                         reply_markup=profile_inline(),
+                                         text=f'Ваш баланс: {0}₽')
+
+
+

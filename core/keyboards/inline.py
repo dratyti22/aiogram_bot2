@@ -33,3 +33,17 @@ def catalog_inline():
         ]
     ])
     return kb
+
+
+def profile_inline():
+    kb = InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(text='Пополнить баланс', callback_data='top_up')
+        ],
+        [
+            InlineKeyboardButton(text='Мои покупки', callback_data='my_purchases')
+        ],
+        [
+            InlineKeyboardButton(text='Назад', callback_data='back')
+        ]
+    ])
