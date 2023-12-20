@@ -62,3 +62,18 @@ def free_top_up_inline():
         ]
     ])
     return kb
+
+
+def more_information_inline():
+    kb = InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(text='О нас', url='https://www.youtube.com/watch?v=dQw4w9WgXcQ')
+        ],
+        [
+            InlineKeyboardButton(text='Контакты админа', url='https://t.me/@user_nameeeeeeeeeeee')
+        ],
+        [
+            InlineKeyboardButton(text='Назад', callback_data='back')
+        ]
+    ])
+    return kb
