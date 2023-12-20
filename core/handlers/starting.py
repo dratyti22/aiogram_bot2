@@ -46,3 +46,9 @@ async def get_more_information(callback_query: CallbackQuery):
                                                reply_markup=more_information_inline(),
                                                text='Дополнительная информация по кнопкам ниже')
 
+
+@router.callback_query(F.data == 'back')
+async def get_back(callback: CallbackQuery):
+    await callback.bot.edit_message_text(chat_id=callback.message.chat.id, message_id=callback.message.message_id,
+                                         reply_markup=start_inline(),
+                                         text=text_start)

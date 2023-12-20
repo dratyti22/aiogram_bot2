@@ -29,6 +29,9 @@ def catalog_inline():
         [
             InlineKeyboardButton(text='PUBG mobaile', callback_data='PUBG_mobaile'),
             InlineKeyboardButton(text='CODM', callback_data='CODM')
+        ],
+        [
+            InlineKeyboardButton(text='Назад', callback_data='back')
         ]
     ])
     return kb
