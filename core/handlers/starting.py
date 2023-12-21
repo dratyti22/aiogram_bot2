@@ -29,23 +29,25 @@ async def get_catalog(callback: CallbackQuery):
 
 @router.callback_query(F.data == 'profile')
 async def get_profile(callback: CallbackQuery):
-    entries = await display_balance(callback.message.from_user.id)
-    balance = entries[1]
-    await callback.bot.edit_message_text(chat_id=callback.message.chat.id, message_id=callback.message.message_id,
-                                         reply_markup=profile_inline(),
-                                         text=f'Ваш баланс: {balance}₽')
+    entries = await display_balance(callback.from_user.id)
+    if entries:
+        balance, _ = entries
+        await callback.bot.edit_message_text(chat_id=callback.message.chat.id, message_id=callback.message.message_id,
+                                             reply_markup=profile_inline(),
+                                             text=f'Ваш баланс: {balance}₽')
 
 
 @router.callback_query(F.data == 'free_top_up')
 async def get_free_top_up(callback_query: CallbackQuery):
-    entries = await display_balance(callback_query.message.from_user.id)
-    balance = entries[1]
-    await callback_query.bot.edit_message_text(chat_id=callback_query.message.chat.id,
-                                               message_id=callback_query.message.message_id,
-                                               reply_markup=free_top_up_inline(),
-                                               text=f'Ваш баланс: {balance}₽\n'
-                                                    f'Вы можете пополнить свой баланс с помощью реферальной программы или'
-                                                    f' промокода')
+    entries = await display_balance(callback_query.from_user.id)
+    if entries:
+        balance, _ = entries
+        await callback_query.bot.edit_message_text(
+            chat_id=callback_query.message.chat.id,
+            message_id=callback_query.message.message_id,
+            reply_markup=free_top_up_inline(),
+            text=f'Ваш баланс: {balance}₽\nВы можете пополнить свой баланс с помощью реферальной программы или промокода'
+        )
 
 
 @router.callback_query(F.data == 'more_information')

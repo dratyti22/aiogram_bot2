@@ -19,7 +19,7 @@ async def create_user_id_and_balance(user_id):
 
 
 async def display_balance(user_id):
-    cur.execute('''SELECT balance, id FROM user_balance WHERE id = ?''', (user_id,))
+    cur.execute("SELECT balance, id FROM user_balance WHERE id = ?", (user_id,))
     entry = cur.fetchone()
     db.commit()
     return entry
