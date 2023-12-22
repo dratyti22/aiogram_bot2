@@ -8,12 +8,19 @@ from core.keyboards.inline import start_inline, catalog_inline, profile_inline, 
 from core.keyboards.commands import command_bot
 from core.database.db_user_id import start_user_id_db
 from core.database.db_user_balance import create_user_id_and_balance, display_balance
+from core.database.db_products_create import create_brawl_stars_db, create_clash_royale_db, create_clash_of_clans_db, \
+    create_pubg_mobaile_db, create_codm_db
 
 router = Router()
 
 
 @router.message(Command('start'))
 async def start_bot_command(message: Message):
+    await create_brawl_stars_db()
+    await create_clash_royale_db()
+    await create_clash_of_clans_db()
+    await create_pubg_mobaile_db()
+    await create_codm_db()
     await start_user_id_db(message.from_user.id)
     await create_user_id_and_balance(message.from_user.id)
     await command_bot(message.bot)

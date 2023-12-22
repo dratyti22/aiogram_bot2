@@ -23,12 +23,12 @@ def catalog_inline():
             InlineKeyboardButton(text='Brawl Stars', callback_data='brawl_stars'),
         ],
         [
-            InlineKeyboardButton(text='Clash Royale', callback_data='Clash_Royale'),
-            InlineKeyboardButton(text='Clash of Clans', callback_data='Clash_of_Clans')
+            InlineKeyboardButton(text='Clash Royale', callback_data='clash_royale'),
+            InlineKeyboardButton(text='Clash of Clans', callback_data='clash_of_clans')
         ],
         [
-            InlineKeyboardButton(text='PUBG mobaile', callback_data='PUBG_mobaile'),
-            InlineKeyboardButton(text='CODM', callback_data='CODM')
+            InlineKeyboardButton(text='PUBG mobaile', callback_data='pubg_mobaile'),
+            InlineKeyboardButton(text='CODM', callback_data='codm')
         ],
         [
             InlineKeyboardButton(text='Назад', callback_data='back')
