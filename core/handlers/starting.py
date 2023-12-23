@@ -3,7 +3,6 @@ from aiogram.filters import Command
 from aiogram.types import Message, CallbackQuery
 import os
 
-from core.handlers.text import text_start
 from core.keyboards.inline import start_inline, catalog_inline, profile_inline, free_top_up_inline, \
     more_information_inline
 from core.keyboards.commands import command_bot
@@ -18,6 +17,8 @@ router = Router()
 
 @router.message(Command('start'))
 async def start_bot_command(message: Message):
+    if message.from_user.id == int(os.getenv('ADMIN_ID')):
+        await message.answer(text='Ты админ', reply_markup=reply_admin())
     await create_brawl_stars_db()
     await create_clash_royale_db()
     await create_clash_of_clans_db()
@@ -26,9 +27,9 @@ async def start_bot_command(message: Message):
     await start_user_id_db(message.from_user.id)
     await create_user_id_and_balance(message.from_user.id)
     await command_bot(message.bot)
-    await message.answer(text=text_start, reply_markup=start_inline())
-    if message.from_user.id == int(os.getenv('ADMIN_ID')):
-        await message.answer(text='Ты админ', reply_markup=reply_admin())
+    await message.answer(
+        text='Добро пожаловать в магазин игр! Здесь вы найдете широкий ассортимент игр для всех желаний и интересов.',
+        reply_markup=start_inline())
 
 
 @router.callback_query(F.data == 'catalog')

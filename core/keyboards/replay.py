@@ -8,5 +8,3 @@ def reply_admin():
     kb.button(text='Удалить товар', callback_data='deleted_product_admin')
     kb.adjust(1)
     return kb.as_markup(resize_keyboard=True)
-
-

@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import asyncio
 import logging
 
-from core.handlers import starting
+from core.handlers import starting, catalog_games, create_product
 
 
 async def starting_bot(bot: Bot):
@@ -24,7 +24,7 @@ async def main():
     dp.startup.register(starting_bot)
     dp.shutdown.register(stop_bot)
 
-    dp.include_routers(starting.router)
+    dp.include_routers(starting.router, catalog_games.router, create_product.router)
 
     try:
         await bot.delete_webhook(drop_pending_updates=True)
