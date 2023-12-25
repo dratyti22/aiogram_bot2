@@ -31,4 +31,5 @@ class AddProductAdminCodmState(StatesGroup):
 
 
 class DeletedProductAdminState(StatesGroup):
+    MAIN = State()
     ID = State()

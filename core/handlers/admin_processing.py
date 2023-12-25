@@ -1,20 +1,63 @@
 from aiogram import F, Router
 from aiogram.types import CallbackQuery, Message
 from aiogram.fsm.context import FSMContext
+import os
 
 from core.keyboards.inline import catalog_inline_admin
 from core.handlers.state import AddProductAdminState, AddProductAdminBsState, AddProductAdminCodmState, \
-    AddProductAdminCocState, AddProductAdminCrState, AddProductAdminPmState
+    AddProductAdminCocState, AddProductAdminCrState, AddProductAdminPmState, DeletedProductAdminState
 from core.database.db_products_add import add_product_brawl_stars_db, add_product_codm_db, \
     add_product_clash_of_clans_db, add_product_clash_royale_db, add_product_pubg_mobaile_db
+from core.database.db_product_deleted import deleted_products_db
 
 router = Router()
 
 
+@router.message(F.text == 'Удалить товар')
+async def get_deleted_product_admin(message: Message, state: FSMContext):
+    if message.from_user.id == int(os.getenv('ADMIN_ID')):
+        await message.answer(text='Выбери категорию игр:', reply_markup=catalog_inline_admin())
+        await state.set_state(DeletedProductAdminState.MAIN)
+    else:
+        await message.answer(text='Ты не админnЗабудь эту команду!')
+        await state.clear()
+
+
+@router.callback_query(DeletedProductAdminState.MAIN)
+async def get_main_catalog(callback: CallbackQuery, state: FSMContext):
+    if callback.data:
+        await state.update_data(category=callback.data)
+        await callback.message.answer(text='Напиши айди товара, который хочешь удалить:')
+        await state.set_state(DeletedProductAdminState.ID)
+    else:
+        await callback.message.answer(text='Необходимо выбрать категорию')
+        await state.clear()
+
+
+@router.message(DeletedProductAdminState.ID)
+async def get_deleted_product_id(message: Message, state: FSMContext):
+    if message.text:
+        data = await state.get_data()
+        category = data.get('category')
+        if message.text.isdigit():
+            await message.answer('Товар удален')
+            deleted_products_db(category, int(message.text))
+            await state.clear()
+        else:
+            await message.answer(text='Надо ввести число.nНапиши число')
+            await state.set_state(DeletedProductAdminState.ID)
+    else:
+        await message.answer(text='Необходимо ввести айди товара')
+        await state.set_state(DeletedProductAdminState.ID)
+
+
 @router.message(F.text == 'Добавить товар')
 async def get_add_product_admin(message: Message, state: FSMContext):
-    await message.answer(text='Выбери категорию игр:', reply_markup=catalog_inline_admin())
-    await state.set_state(AddProductAdminState.MAIN)
+    if message.from_user.id == int(os.getenv('ADMIN_ID')):
+        await message.answer(text='Выбери категорию игр:', reply_markup=catalog_inline_admin())
+        await state.set_state(AddProductAdminState.MAIN)
+    else:
+        await message.answer(text='Ты не админ\nЗабудь эту команду!')
 
 
 @router.callback_query(AddProductAdminState.MAIN)
