@@ -28,3 +28,7 @@ class AddProductAdminCrState(StatesGroup):
 class AddProductAdminCodmState(StatesGroup):
     NAME = State()
     PRICE = State()
+
+
+class DeletedProductAdminState(StatesGroup):
+    ID = State()
