@@ -5,12 +5,38 @@ import os
 
 from core.keyboards.inline import catalog_inline_admin
 from core.handlers.state import AddProductAdminState, AddProductAdminBsState, AddProductAdminCodmState, \
-    AddProductAdminCocState, AddProductAdminCrState, AddProductAdminPmState, DeletedProductAdminState
+    AddProductAdminCocState, AddProductAdminCrState, AddProductAdminPmState, DeletedProductAdminState, \
+    DisplayProductInCatalogState
 from core.database.db_products_add import add_product_brawl_stars_db, add_product_codm_db, \
     add_product_clash_of_clans_db, add_product_clash_royale_db, add_product_pubg_mobaile_db
 from core.database.db_product_deleted import deleted_products_db
+from core.database.db_products_create import display_db
 
 router = Router()
+
+
+@router.message(F.text == 'Посмотреть товар в категории')
+async def display_products_in_category(message: Message, state: FSMContext):
+    if message.from_user.id == int(os.getenv('ADMIN_ID')):
+        await message.answer(text='Выбери категорию игр:', reply_markup=catalog_inline_admin())
+        await state.set_state(DisplayProductInCatalogState.MAIN)
+    else:
+        await message.answer(text='Ты не админn\nЗабудь эту команду!')
+
+
+@router.callback_query(DisplayProductInCatalogState.MAIN)
+async def get_main_catalog(callback: CallbackQuery, state: FSMContext):
+    if callback.data:
+        await state.update_data(category=callback.data)
+        entries = display_db(callback.data)
+        if len(entries) > 0:
+            text = '\n'.join(f'id: {entry[0]}, name: {entry[1]}, price: {entry[2]}' for entry in entries)
+            await callback.message.answer(text=text)
+        else:
+            await callback.message.answer(text='Товары отсутствуют')
+    else:
+        await callback.message.answer(text='Необходимо выбрать категорию')
+        await state.clear()
 
 
 @router.message(F.text == 'Удалить товар')
@@ -19,8 +45,7 @@ async def get_deleted_product_admin(message: Message, state: FSMContext):
         await message.answer(text='Выбери категорию игр:', reply_markup=catalog_inline_admin())
         await state.set_state(DeletedProductAdminState.MAIN)
     else:
-        await message.answer(text='Ты не админnЗабудь эту команду!')
-        await state.clear()
+        await message.answer(text='Ты не админn\nЗабудь эту команду!')
 
 
 @router.callback_query(DeletedProductAdminState.MAIN)

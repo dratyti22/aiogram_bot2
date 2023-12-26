@@ -13,6 +13,20 @@ async def create_brawl_stars_db():
     conn.commit()
 
 
+def display_db(db_name):
+    if db_name == 'codm_admin':
+        cur.execute(f'''SELECT * FROM codm''')
+        entry = cur.fetchall()
+        conn.commit()
+        return entry
+    else:
+        name = db_name.rstrip('_admin')
+        cur.execute(f'''SELECT * FROM {name}''')
+        entry = cur.fetchall()
+        conn.commit()
+        return entry
+
+
 def display_brawl_stars_db():
     cur.execute('''SELECT * FROM brawl_stars''')
     entry = cur.fetchall()
