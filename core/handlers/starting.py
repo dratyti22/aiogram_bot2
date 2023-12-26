@@ -74,4 +74,5 @@ async def get_more_information(callback_query: CallbackQuery):
 async def get_back(callback: CallbackQuery):
     await callback.bot.edit_message_text(chat_id=callback.message.chat.id, message_id=callback.message.message_id,
                                          reply_markup=start_inline(),
-                                         text=text_start)
+                                         text='Добро пожаловать в магазин игр!\
+                                          Здесь вы найдете широкий ассортимент игр для всех желаний и интересов.')
