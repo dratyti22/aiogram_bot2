@@ -75,7 +75,7 @@ def free_top_up_inline():
             InlineKeyboardButton(text='Промокоды', callback_data='promocodes')
         ],
         [
-            InlineKeyboardButton(text='Реферальная программа', callback_data='referal_program')
+            InlineKeyboardButton(text='Реферальная программа', callback_data='referral_program')
         ],
         [
             InlineKeyboardButton(text='Назад', callback_data='back')
@@ -94,6 +94,18 @@ def more_information_inline():
         ],
         [
             InlineKeyboardButton(text='Назад', callback_data='back')
+        ]
+    ])
+    return kb
+
+
+def get_referral_program_inline():
+    kb = InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(text='Изменить ссылку', callback_data='change_link')
+        ],
+        [
+            InlineKeyboardButton(text='Назад', callback_data='back_referral_program_catalog')
         ]
     ])
     return kb
