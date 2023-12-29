@@ -32,7 +32,7 @@ def inline_catalog_clash_of_clans():
             [
                 InlineKeyboardButton(
                     text=entry[1],
-                    callback_data=f'product_{entry[0]}_brawl_stars'
+                    callback_data=f'product_{entry[0]}_clash_of_clans'
                 ),
             ] for entry in entries
         ]
@@ -54,7 +54,7 @@ def inline_catalog_pubg_mobaile():
             [
                 InlineKeyboardButton(
                     text=entry[1],
-                    callback_data=f'product_{entry[0]}_brawl_stars'
+                    callback_data=f'product_{entry[0]}_pubg_mobaile'
                 ),
             ] for entry in entries
         ]
@@ -98,7 +98,7 @@ def inline_catalog_codm():
             [
                 InlineKeyboardButton(
                     text=entry[1],
-                    callback_data=f'product_{entry[0]}_brawl_stars'
+                    callback_data=f'product_{entry[0]}_codm'
                 ),
             ] for entry in entries
         ]
