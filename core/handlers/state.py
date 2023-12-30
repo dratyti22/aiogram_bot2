@@ -37,3 +37,7 @@ class DeletedProductAdminState(StatesGroup):
 
 class DisplayProductInCatalogState(StatesGroup):
     MAIN = State()
+
+
+class EmailState(StatesGroup):
+    EMAIL = State()
