@@ -4,6 +4,19 @@ conn = sq.connect('aiogram2.db')
 cur = conn.cursor()
 
 
+async def display_product_pay_in_catalog(name_db: str):
+    name = '_'.join(name_db.split('_')[2:])
+    id_product = ' '.join(name_db.split('_')[1])
+    cur.execute(f'''
+        SELECT name,price FROM {name} WHERE id = ?
+     ''', (id_product,))
+    result = cur.fetchall()
+    if result:
+        return result
+    else:
+        return None, None
+
+
 async def create_brawl_stars_db():
     cur.execute('''CREATE TABLE IF NOT EXISTS brawl_stars(
         id INTEGER PRIMARY KEY,
