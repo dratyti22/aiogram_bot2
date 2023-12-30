@@ -109,3 +109,33 @@ def get_referral_program_inline():
         ]
     ])
     return kb
+
+
+def back_pay_in_catalog_inline():
+    kb = InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(text='❌Отмена', callback_data='exit_in_menu')
+        ]
+    ])
+    return kb
+
+
+def pay_in_catalog_product_inline():
+    kb = InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(text='платить', url='https://www.youtube.com/')
+        ],
+        [
+            InlineKeyboardButton(text='Проверить платеж', callback_data='check_payment')
+        ],
+        [
+            InlineKeyboardButton(text='Изсенить почту', callback_data='change_email')
+        ],
+        [
+            InlineKeyboardButton(text='Обновить', callback_data='updata_pay_product')
+        ],
+        [
+            InlineKeyboardButton(text='Заказы', callback_data='my_orders')
+        ]
+    ])
+    return kb
