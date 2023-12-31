@@ -8,9 +8,9 @@ async def save_orders_db(name_products: str, price_products: int, time_products:
                          email_products: str):
     cur.execute('''CREATE TABLE IF NOT EXISTS orders(
         name TEXT,
-        price INTEGER
+        price INTEGER,
         time TEXT,
-        id TEXT
+        id TEXT,
         email TEXT
     )''')
     conn.commit()
@@ -20,7 +20,7 @@ async def save_orders_db(name_products: str, price_products: int, time_products:
 
 
 async def get_orders_db():
-    cur.execute('''SELECT name FROM orders''')
+    cur.execute('''SELECT name,price,time,id FROM orders''')
     entry = cur.fetchall()
     conn.commit()
     return entry
