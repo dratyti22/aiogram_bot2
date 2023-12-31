@@ -60,7 +60,7 @@ def profile_inline():
             InlineKeyboardButton(text='Пополнить баланс', callback_data='top_up')
         ],
         [
-            InlineKeyboardButton(text='Мои покупки', callback_data='my_purchases')
+            InlineKeyboardButton(text='Мои покупки', callback_data='my_orders')
         ],
         [
             InlineKeyboardButton(text='Назад', callback_data='back')
