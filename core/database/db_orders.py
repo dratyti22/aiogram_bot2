@@ -28,7 +28,8 @@ def display_orders_db():
 
 
 def display_orders_id_db(product_id):
-    cur.execute('''SELECT name,price,time,id FROM orders WHERE id_products=?''', (product_id,))
+    db_id = product_id.rstrip('orders_')
+    cur.execute("SELECT name, price, time, id FROM orders WHERE id_products = ?", (db_id,))
     result = cur.fetchone()
     if result:
         return result

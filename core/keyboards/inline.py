@@ -1,5 +1,6 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
+from core.database.db_orders import display_orders_db
 
 def start_inline():
     kb = InlineKeyboardMarkup(inline_keyboard=[
@@ -139,3 +140,29 @@ def pay_in_catalog_product_inline():
         ]
     ])
     return kb
+
+
+def orders_inline():
+    entries = display_orders_db()
+    if len(entries) > 0:
+        inline_buttons = [
+            [
+                InlineKeyboardButton(
+                    text=entry[1],
+                    callback_data=f'orders_{entry[0]}'
+                ),
+            ] for entry in entries
+        ]
+        inline_buttons.append([
+            InlineKeyboardButton(text='Назад', callback_data='back_catalog')
+        ])
+
+        kb = InlineKeyboardMarkup(inline_keyboard=inline_buttons)
+        return kb
+    else:
+        kb = InlineKeyboardMarkup(inline_keyboard=[
+            [
+                InlineKeyboardButton(text='Назад', callback_data='back_catalog')
+            ]
+        ])
+        return kb
