@@ -43,4 +43,3 @@ async def get_coupon_details(coupon_name: str):
 async def decrement_coupon_amount(coupon_name: str):
     cur.execute("UPDATE coupons SET quantity = quantity - 1 WHERE name = ?", (coupon_name,))
     conn.commit()
-

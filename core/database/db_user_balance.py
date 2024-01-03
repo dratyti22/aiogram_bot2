@@ -23,3 +23,11 @@ async def display_balance(user_id):
     entry = cur.fetchone()
     db.commit()
     return entry
+
+
+async def add_balance(user_id, amount):
+    cur.execute("SELECT balance FROM user_balance WHERE id=?", (user_id,))
+    cursor_balance = cur.fetchone()[0]
+    new_balance = cursor_balance + amount
+    cur.execute("UPDATE user_balance SET balance=? WHERE id=?", (new_balance, user_id))
+    db.commit()
