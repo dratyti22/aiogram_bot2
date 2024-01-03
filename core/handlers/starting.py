@@ -11,6 +11,7 @@ from core.database.db_user_id import start_user_id_db
 from core.database.db_user_balance import create_user_id_and_balance, display_balance
 from core.database.db_products_create import create_brawl_stars_db, create_clash_royale_db, create_clash_of_clans_db, \
     create_pubg_mobaile_db, create_codm_db
+from core.database.db_coupons import create_coupons
 
 router = Router()
 
@@ -19,6 +20,7 @@ router = Router()
 async def start_bot_command(message: Message):
     if message.from_user.id == int(os.getenv('ADMIN_ID')):
         await message.answer(text='Ты админ', reply_markup=reply_admin())
+    await create_coupons()
     await create_brawl_stars_db()
     await create_clash_royale_db()
     await create_clash_of_clans_db()

@@ -42,7 +42,7 @@ async def get_email(message: Message, state: FSMContext):
                        f'Почта: {email}\n'
                        f'Спасибо за покупку!')
         await message.answer(text=text, reply_markup=pay_in_catalog_product_inline())
-        await save_orders_db(name_products=name, price_products=price, time_products=time, id_products=id_product,
+        await save_orders_db(name_products=name, price_products=price, time_products=time, id_product=id_product,
                              email_products=email)
         await state.clear()
     else:

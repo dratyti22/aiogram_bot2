@@ -41,3 +41,17 @@ class DisplayProductInCatalogState(StatesGroup):
 
 class EmailState(StatesGroup):
     EMAIL = State()
+
+
+class AddCouponsState(StatesGroup):
+    NAME = State()
+    PRICE = State()
+    QUANTITY = State()
+
+
+class DeletedCouponsState(StatesGroup):
+    ID = State()
+
+
+class TitleState(StatesGroup):
+    TITLE = State()
