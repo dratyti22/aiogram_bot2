@@ -2,6 +2,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 from core.database.db_orders import display_orders_db
 
+
 def start_inline():
     kb = InlineKeyboardMarkup(inline_keyboard=[
         [
@@ -73,7 +74,7 @@ def profile_inline():
 def free_top_up_inline():
     kb = InlineKeyboardMarkup(inline_keyboard=[
         [
-            InlineKeyboardButton(text='Промокоды', callback_data='promocodes')
+            InlineKeyboardButton(text='Промокоды', callback_data='coupons')
         ],
         [
             InlineKeyboardButton(text='Реферальная программа', callback_data='referral_program')
@@ -105,6 +106,15 @@ def get_referral_program_inline():
         [
             InlineKeyboardButton(text='Изменить ссылку', callback_data='change_link')
         ],
+        [
+            InlineKeyboardButton(text='Назад', callback_data='back_referral_program_catalog')
+        ]
+    ])
+    return kb
+
+
+def get_coupons_inline():
+    kb = InlineKeyboardMarkup(inline_keyboard=[
         [
             InlineKeyboardButton(text='Назад', callback_data='back_referral_program_catalog')
         ]
@@ -149,7 +159,7 @@ def orders_inline():
             [
                 InlineKeyboardButton(
                     text=entry[1],
-                    callback_data=f'orders_{entry[0]}'
+                    callback_data=f'order_{entry[0]}'
                 ),
             ] for entry in entries
         ]
@@ -166,3 +176,12 @@ def orders_inline():
             ]
         ])
         return kb
+
+
+def menu_back_inline():
+    kb = InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(text='Назад', callback_data='menu_back')
+        ]
+    ])
+    return kb
