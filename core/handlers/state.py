@@ -55,3 +55,7 @@ class DeletedCouponsState(StatesGroup):
 
 class TitleState(StatesGroup):
     TITLE = State()
+
+
+class TextMailingListState(StatesGroup):
+    TEXT = State()
