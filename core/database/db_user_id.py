@@ -13,3 +13,12 @@ async def start_user_id_db(user_id):
     if not user:
         cur.execute("INSERT INTO accounts (tg_id) VALUES ({key})".format(key=user_id))
         db.commit()
+
+
+def set_activate_db(user_id, activate):
+    return cur.execute(
+        '''UPDATE accounts SET activate = {key} WHERE tg_id == {key2}'''.format(key=activate, key2=user_id))
+
+
+def get_users_db():
+    return cur.execute("SELECT tg_id, activate FROM accounts").fetchall()
