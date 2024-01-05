@@ -75,32 +75,28 @@ async def display_coupons_admin(message: Message):
 @router.callback_query(F.data == 'coupons')
 async def get_name_coupons(callback: CallbackQuery, state: FSMContext):
     await callback.bot.edit_message_text(chat_id=callback.message.chat.id, message_id=callback.message.message_id,
-                                         text='Напишите название купона:')
+                                         text='Напишите название купона:',
+                                         reply_markup=get_coupons_inline())
     await state.set_state(TitleState.TITLE)
 
 
 @router.message(TitleState.TITLE)
-async def title_state(message: Message, state: FSMContext, callback: CallbackQuery):
+async def get_title_state(message: Message, state: FSMContext):
     coupon_name = message.text
     price, amount = await get_coupon_details(coupon_name)
     if price is not None:
         if amount >= 1:
             await add_balance(message.from_user.id, price)
             await decrement_coupon_amount(coupon_name)
-            await callback.bot.edit_message_text(f'Купон "{coupon_name}" успешно использован! Вам добавлена сумма \
-                                                {price} рублей.', message_id=message.message_id,
-                                                 chat_id=message.chat.id,
-                                                 reply_markup=await get_coupons_inline())
-            await state.clear()
+            message_text = f'Купон "{coupon_name}" успешно использован! Вам добавлена сумма {price} рублей.'
         else:
-            await callback.bot.edit_message_text(f'Купон "{coupon_name}" больше не доступен.',
-                                                 message_id=message.message_id,
-                                                 chat_id=message.chat.id,
-                                                 reply_markup=await get_coupons_inline())
-            await state.clear()
+            message_text = f'Купон "{coupon_name}" больше не доступен.'
     else:
-        await callback.bot.edit_message_text(f'Купон с названием "{coupon_name}" не найден.',
-                                             message_id=message.message_id,
-                                             chat_id=message.chat.id,
-                                             reply_markup=await get_coupons_inline())
-        await state.clear()
+        message_text = f'Купон с названием "{coupon_name}" не найден.'
+
+    await message.answer(
+        text=message_text,
+        reply_markup=get_coupons_inline()
+    )
+
+    await state.clear()
