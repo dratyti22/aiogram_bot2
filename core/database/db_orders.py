@@ -4,7 +4,7 @@ conn = sq.connect('aiogram2.db')
 cur = conn.cursor()
 
 
-async def save_orders_db(name_products: str, price_products: int, time_products: str, id_products: str,
+async def save_orders_db(name_products: str, price_products: int, time_products: str, id_product: str,
                          email_products: str):
     cur.execute('''CREATE TABLE IF NOT EXISTS orders(
         id_products INTEGER PRIMARY KEY,
@@ -16,7 +16,7 @@ async def save_orders_db(name_products: str, price_products: int, time_products:
     )''')
     conn.commit()
     cur.execute('''INSERT INTO orders(name, price, time, id, email) VALUES (?, ?, ?, ?, ?)''',
-                (name_products, price_products, time_products, id_products, email_products))
+                (name_products, price_products, time_products, id_product, email_products))
     conn.commit()
 
 
@@ -27,9 +27,7 @@ def display_orders_db():
     return entry
 
 
-def display_orders_id_db(product_id):
-    db_id = product_id.rstrip('orders_')
-    cur.execute("SELECT name, price, time, id FROM orders WHERE id_products = ?", (db_id,))
-    result = cur.fetchone()
-    if result:
-        return result
+async def display_orders_id_db(product_id):
+    cur.execute("SELECT name, price, time, id FROM orders WHERE id_products =?", (product_id,))
+    result = cur.fetchall()
+    return result
