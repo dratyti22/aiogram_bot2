@@ -59,3 +59,7 @@ class TitleState(StatesGroup):
 
 class TextMailingListState(StatesGroup):
     TEXT = State()
+
+
+class ChangeLinkState(StatesGroup):
+    LINK = State()
