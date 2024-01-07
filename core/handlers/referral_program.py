@@ -1,10 +1,13 @@
-from aiogram import F, Router
-from aiogram.types import CallbackQuery
+from aiogram import F, Router, Bot
+from aiogram.types import CallbackQuery, Message
 from aiogram.utils.deep_linking import create_start_link
+from aiogram.fsm.context import FSMContext
 
-from core.database.db_referral_program import create_referral_program_db, display_referral_program_db
-from core.keyboards.inline import get_referral_program_inline
+from core.database.db_referral_program import create_referral_program_db, display_referral_program_db, \
+    change_the_link_db
+from core.keyboards.inline import get_referral_program_inline, menu_back_inline
 from core.handlers.starting import get_free_top_up
+from core.handlers.state import ChangeLinkState
 
 router = Router()
 
@@ -25,3 +28,19 @@ async def set_referral_program(callback: CallbackQuery):
 @router.callback_query(F.data == 'back_referral_program_catalog')
 async def get_back_referral_program(callback_query: CallbackQuery):
     await get_free_top_up(callback_query)
+
+
+@router.callback_query(F.data == 'change_link')
+async def get_change_link(callback: CallbackQuery, state: FSMContext):
+    await callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id,
+                                         text='Напишите новую ссылку, которую вы хотите указать:',
+                                         reply_markup=menu_back_inline())
+    await state.set_state(ChangeLinkState.LINK)
+
+
+@router.message(ChangeLinkState.LINK)
+async def set_change_link(message: Message, state: FSMContext, bot: Bot):
+    new_link = await create_start_link(bot, message.text)
+    await change_the_link_db(message.from_user.id, str(new_link))
+    await message.answer('Ссылка успешно изменена', reply_markup=menu_back_inline())
+    await state.clear()
