@@ -28,3 +28,13 @@ async def display_referral_program_db():
     entry = cur.fetchall()
     conn.commit()
     return entry
+
+
+async def change_the_link_db(tg_id: int, link: str):
+    cur.execute(
+        '''UPDATE referral_program
+        SET link = ?
+        WHERE user_id = ?''',
+        (link, tg_id)
+    )
+    conn.commit()
