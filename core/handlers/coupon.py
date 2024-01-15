@@ -86,7 +86,7 @@ async def get_title_state(message: Message, state: FSMContext):
     price, amount = await get_coupon_details(coupon_name)
     if price is not None:
         if amount >= 1:
-            await add_balance(message.from_user.id, price)
+            add_balance(message.from_user.id, price)
             await decrement_coupon_amount(coupon_name)
             message_text = f'Купон "{coupon_name}" успешно использован! Вам добавлена сумма {price} рублей.'
         else:
