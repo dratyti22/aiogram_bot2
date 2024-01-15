@@ -12,6 +12,7 @@ from core.database.db_user_balance import create_user_id_and_balance, display_ba
 from core.database.db_products_create import create_brawl_stars_db, create_clash_royale_db, create_clash_of_clans_db, \
     create_pubg_mobaile_db, create_codm_db
 from core.database.db_coupons import create_coupons
+from core.database.db_orders import create_orders_db
 
 router = Router()
 
@@ -21,13 +22,14 @@ async def start_bot_command(message: Message):
     if message.from_user.id == int(os.getenv('ADMIN_ID')):
         await message.answer(text='Ты админ', reply_markup=reply_admin())
     await create_coupons()
+    await create_orders_db()
     await create_brawl_stars_db()
     await create_clash_royale_db()
     await create_clash_of_clans_db()
     await create_pubg_mobaile_db()
     await create_codm_db()
     await start_user_id_db(message.from_user.id)
-    await create_user_id_and_balance(message.from_user.id)
+    create_user_id_and_balance(message.from_user.id)
     await command_bot(message.bot)
     await message.answer(
         text='Добро пожаловать в магазин игр! Здесь вы найдете широкий ассортимент игр для всех желаний и интересов.',
@@ -43,7 +45,7 @@ async def get_catalog(callback: CallbackQuery):
 
 @router.callback_query(F.data == 'profile')
 async def get_profile(callback: CallbackQuery):
-    entries = await display_balance(callback.from_user.id)
+    entries = display_balance(callback.from_user.id)
     if entries:
         balance, _ = entries
         await callback.bot.edit_message_text(chat_id=callback.message.chat.id, message_id=callback.message.message_id,
@@ -53,7 +55,7 @@ async def get_profile(callback: CallbackQuery):
 
 @router.callback_query(F.data == 'free_top_up')
 async def get_free_top_up(callback_query: CallbackQuery):
-    entries = await display_balance(callback_query.from_user.id)
+    entries = display_balance(callback_query.from_user.id)
     if entries:
         balance, _ = entries
         await callback_query.bot.edit_message_text(

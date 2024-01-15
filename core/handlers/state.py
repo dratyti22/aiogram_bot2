@@ -41,6 +41,11 @@ class DisplayProductInCatalogState(StatesGroup):
 
 class EmailState(StatesGroup):
     EMAIL = State()
+    ChangeEmail = State()
+
+
+class TopUpYourBalanceState(StatesGroup):
+    NUMBER = State()
 
 
 class AddCouponsState(StatesGroup):
@@ -63,3 +68,7 @@ class TextMailingListState(StatesGroup):
 
 class ChangeLinkState(StatesGroup):
     LINK = State()
+
+
+class AddBalanceState(StatesGroup):
+    NUMBER = State()
