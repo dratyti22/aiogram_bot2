@@ -31,3 +31,15 @@ async def add_balance(user_id, amount):
     new_balance = cursor_balance + amount
     cur.execute("UPDATE user_balance SET balance=? WHERE id=?", (new_balance, user_id))
     db.commit()
+
+
+async def subtract_balance(user_id: int, amount: int):
+    cur.execute('SELECT balance FROM user_balance WHERE id=?', (user_id,))
+    cur_balance = cur.fetchone()[0]
+
+    if cur_balance >= amount:
+        new_balance = cur_balance - amount
+        cur.execute('UPDATE user_balance SET balance=? WHERE id=?', (new_balance, user_id))
+        db.commit()
+    else:
+        return None
