@@ -134,16 +134,37 @@ def back_pay_in_catalog_inline():
 def pay_in_catalog_product_inline():
     kb = InlineKeyboardMarkup(inline_keyboard=[
         [
-            InlineKeyboardButton(text='платить', url='https://www.youtube.com/')
+            InlineKeyboardButton(text='платить', callback_data='pay_product')
         ],
         [
             InlineKeyboardButton(text='Проверить платеж', callback_data='check_payment')
         ],
         [
-            InlineKeyboardButton(text='Изсенить почту', callback_data='change_email')
+            InlineKeyboardButton(text='Изменить почту', callback_data='change_email')
         ],
         [
-            InlineKeyboardButton(text='Обновить', callback_data='updata_pay_product')
+            InlineKeyboardButton(text='Обновить', callback_data='update_pay_product')
+        ],
+        [
+            InlineKeyboardButton(text='Заказы', callback_data='my_orders')
+        ]
+    ])
+    return kb
+
+
+def pay_in_catalog_product_inline_free():
+    kb = InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(text='платить', callback_data='pay_product_free')
+        ],
+        [
+            InlineKeyboardButton(text='Проверить платеж', callback_data='check_payment')
+        ],
+        [
+            InlineKeyboardButton(text='Изменить почту', callback_data='change_email')
+        ],
+        [
+            InlineKeyboardButton(text='Обновить', callback_data='update_pay_product')
         ],
         [
             InlineKeyboardButton(text='Заказы', callback_data='my_orders')
@@ -155,16 +176,19 @@ def pay_in_catalog_product_inline():
 def orders_inline():
     entries = display_orders_db()
     if len(entries) > 0:
-        inline_buttons = [
-            [
-                InlineKeyboardButton(
-                    text=entry[1],
-                    callback_data=f'order_{entry[0]}'
-                ),
-            ] for entry in entries
-        ]
+
+        inline_buttons = []
+        temp_buttons = []
+        for entry in entries:
+
+            temp_buttons.append(InlineKeyboardButton(text=entry[1], callback_data=f'order_{entry[0]}'))
+            if len(temp_buttons) == 2:
+                inline_buttons.append(temp_buttons)
+                temp_buttons = []
+        if temp_buttons:
+            inline_buttons.append(temp_buttons)
         inline_buttons.append([
-            InlineKeyboardButton(text='Назад', callback_data='back_catalog')
+            InlineKeyboardButton(text='Назад', callback_data='menu_back')
         ])
 
         kb = InlineKeyboardMarkup(inline_keyboard=inline_buttons)
@@ -172,7 +196,7 @@ def orders_inline():
     else:
         kb = InlineKeyboardMarkup(inline_keyboard=[
             [
-                InlineKeyboardButton(text='Назад', callback_data='back_catalog')
+                InlineKeyboardButton(text='Назад', callback_data='menu_back')
             ]
         ])
         return kb
