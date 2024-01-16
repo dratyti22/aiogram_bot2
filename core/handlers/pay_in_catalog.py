@@ -19,7 +19,7 @@ router = Router()
 async def get_pay_in_catalog_product(callback: CallbackQuery, bot: Bot, state: FSMContext):
     entries = await display_product_pay_in_catalog(callback.data)
     await state.update_data(db_name=callback.data)
-    text = ' '.join(f'Покупка товара:\nНазвание: {entry[0]}\nЦена: {entry[1]}\n'
+    text = ' '.join(f'Покупка товара:nНазвание: {entry[0]}nЦена: {entry[1]}n'
                     f'Чтобы купить товар, отправьте email, на котором зарегистрирован аккаунт' for entry in entries)
     await bot.edit_message_text(chat_id=callback.message.chat.id, message_id=callback.message.message_id,
                                 text=text, reply_markup=back_pay_in_catalog_inline())
@@ -40,6 +40,13 @@ async def get_email(message: Message, state: FSMContext):
         time = datetime.datetime.now().strftime("%d.%m.%Y")
         email = message.text
         pay_time = 'ждет оплаты'
+
+        # Получаем данные о пользователе-реферале
+        # referrer_id = get_referrer_id(message.from_user.id)
+
+        # Вызываем функцию для добавления перешедшего пользователя с id реферала
+        # await add_clicker(referrer_id, message.from_user.id)
+
         text = ''.join(f'Информация о заказе:\n'
                        f'🆔: {id_product}\n\n'
                        f'⏳: {time}\n'
@@ -63,8 +70,8 @@ async def get_email(message: Message, state: FSMContext):
         }
         await state.update_data(**updated_data)
     else:
-        await message.reply(text='Неправильно указана почта, напишите еще раз.\n'
-                                 'Почта должна быть в таком формате:\nqaz@gg.com')
+        await message.reply(text='Неправильно указана почта, напишите еще раз.n'
+                                 'Почта должна быть в таком формате:nqaz@gg.com')
 
 
 @router.callback_query(F.data == 'pay_product')
@@ -81,8 +88,7 @@ async def pre_checkout_query(query: PreCheckoutQuery, bot: Bot):
 @router.message(F.successful_payment)
 async def successful_payment(message: Message, bot: Bot, state: FSMContext):
     await bot.send_message(chat_id=message.chat.id,
-                           text=f'Платеж выполнен на сумму: {message.successful_payment.total_amount // 100}\
-    {message.successful_payment.currency}')
+                           text=f'Платеж выполнен на сумму: {message.successful_payment.total_amount // 100}{message.successful_payment.currency}')
     await state.clear()
 
 
@@ -104,7 +110,7 @@ async def get_change_email(callback: CallbackQuery, state: FSMContext):
 @router.message(EmailState.ChangeEmail)
 async def change_email_pay_in_catalog(message: Message, state: FSMContext):
     data = await state.get_data()
-    balance_entry =display_balance(message.from_user.id)
+    balance_entry = display_balance(message.from_user.id)
     balance = balance_entry[0]
     if '@' in message.text and message.text.endswith('.com'):
         change_email_db(data['pay_id_product'], message.text)

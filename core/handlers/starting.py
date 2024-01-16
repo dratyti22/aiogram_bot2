@@ -7,12 +7,13 @@ from core.keyboards.inline import start_inline, catalog_inline, profile_inline, 
     more_information_inline
 from core.keyboards.commands import command_bot
 from core.keyboards.replay import reply_admin
-from core.database.db_user_id import start_user_id_db
+from core.database.db_user_id import start_user_id_db, search_user_id_db
 from core.database.db_user_balance import create_user_id_and_balance, display_balance
 from core.database.db_products_create import create_brawl_stars_db, create_clash_royale_db, create_clash_of_clans_db, \
     create_pubg_mobaile_db, create_codm_db
 from core.database.db_coupons import create_coupons
 from core.database.db_orders import create_orders_db
+from core.database.db_referral_program import increase_click_count, add_clicker, create_referral_program_db
 
 router = Router()
 
@@ -21,6 +22,7 @@ router = Router()
 async def start_bot_command(message: Message):
     if message.from_user.id == int(os.getenv('ADMIN_ID')):
         await message.answer(text='Ты админ', reply_markup=reply_admin())
+    await create_referral_program_db()
     await create_coupons()
     await create_orders_db()
     await create_brawl_stars_db()
@@ -31,6 +33,13 @@ async def start_bot_command(message: Message):
     await start_user_id_db(message.from_user.id)
     create_user_id_and_balance(message.from_user.id)
     await command_bot(message.bot)
+
+    if len(message.text) > 7:
+        id_user = message.text[8:]
+        if search_user_id_db(id_user):
+            await increase_click_count(id_user)
+            await add_clicker(id_user, message.from_user.id)
+
     await message.answer(
         text='Добро пожаловать в магазин игр! Здесь вы найдете широкий ассортимент игр для всех желаний и интересов.',
         reply_markup=start_inline())

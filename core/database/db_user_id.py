@@ -22,3 +22,9 @@ def set_activate_db(user_id, activate):
 
 def get_users_db():
     return cur.execute("SELECT tg_id, activate FROM accounts").fetchall()
+
+
+def search_user_id_db(user_id):
+    cur.execute("SELECT * FROM accounts WHERE tg_id = ?", (user_id,))
+    result = cur.fetchone()
+    return result is not None
